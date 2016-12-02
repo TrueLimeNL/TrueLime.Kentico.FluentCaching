@@ -2,7 +2,7 @@
 using CMS.Helpers;
 using CMS.SiteProvider;
 
-namespace TrueLime.Kentico.FluentCaching
+namespace $rootnamespace$.FluentCaching
 {
     /// <summary>
     /// Provides caching for methods that return a single content item or a collection of content items. A minimum set of cache dependencies is also specified 

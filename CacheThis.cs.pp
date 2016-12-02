@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CMS.Helpers;
 
-namespace TrueLime.Kentico.FluentCaching
+namespace $rootnamespace$.FluentCaching
 {
     /// <summary>
     /// Root for fluent caching configuration.

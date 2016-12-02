@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace TrueLime.Kentico.FluentCaching
+namespace $rootnamespace$.FluentCaching
 {
     /// <summary>
     /// Extensions for fluent caching configuration
