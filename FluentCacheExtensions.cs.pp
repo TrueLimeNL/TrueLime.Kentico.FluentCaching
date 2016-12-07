@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace $rootnamespace$.FluentCaching
 {
@@ -9,12 +9,6 @@ namespace $rootnamespace$.FluentCaching
     /// </summary>
     public static class FluentCacheExtensions
     {
-        public static CacheThis DependsOnObject(this CacheThis settings, string objectType)
-        {
-            settings.DependencyKeys.Add(GetDependencyCacheKeyForObject(objectType));
-            return settings;
-        }
-
         public static CacheThis ForMinutes(this CacheThis settings, int minutes)
         {
             settings.CacheMinutes = minutes;
@@ -35,7 +29,10 @@ namespace $rootnamespace$.FluentCaching
 
         public static CacheThis WithDependencies(this CacheThis settings, string[] dependencies)
         {
-            settings.DependencyKeys.AddRange(dependencies);
+            if (dependencies == null || dependencies.Length == 0)
+                return settings;
+
+            settings.DependencyKeys.AddRange(dependencies.Where(d => !string.IsNullOrEmpty(d)));
             return settings;
         }
 
@@ -47,40 +44,72 @@ namespace $rootnamespace$.FluentCaching
             return settings;
         }
 
-        public static CacheThis DependsOnPage(this CacheThis settings, string objectType)
+        public static CacheThis DependsOnParentPage(this CacheThis settings, string parentAliasPath)
         {
-            settings.DependencyKeys.Add(GetDependencyCacheKeyForPage(settings.Sitename, objectType));
+            if (parentAliasPath == null) throw new ArgumentNullException(nameof(parentAliasPath));
+
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForChildPages(parentAliasPath, settings.Sitename));
             return settings;
         }
 
-        public static string GetDependencyCacheKeyForPage(string sitename, string kenticoClassName)
+        public static CacheThis DependsOnPageType(this CacheThis settings, string pageType)
         {
-            return FormattableString.Invariant($"nodes|{sitename}|{kenticoClassName}|all");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPageType(pageType, settings.Sitename));
+            return settings;
         }
 
-        public static string GetDependencyCacheKeyForChildPages(this CacheThis settings, string sitename, string nodeAliasPath)
+        public static CacheThis DependsOnObjectType(this CacheThis settings, string objectType)
         {
-            return FormattableString.Invariant($"node|{sitename}|{nodeAliasPath}|childnodes");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForObjectType(objectType));
+            return settings;
         }
 
-        public static string GetDependencyCacheKeyForPage(string kenticoClassName, int nodeId)
+        public static CacheThis DependsOnNode(this CacheThis settings, int nodeId)
         {
-            return FormattableString.Invariant($"nodeid|{nodeId}");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeId));
+            return settings;
         }
 
-        public static string GetDependencyCacheKeyForPage(string sitename, string kenticoClassName, Guid nodeGuid)
+        public static CacheThis DependsOnNode(this CacheThis settings, Guid nodeGuid)
         {
-            return FormattableString.Invariant($"nodeguid|{sitename}|{nodeGuid}");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeGuid, settings.Sitename));
+            return settings;
         }
 
-        public static string GetDependencyCacheKeyForObject(string kenticoClassName)
+        public static CacheThis DependsOnNode(this CacheThis settings, string nodeAliasPath)
         {
-            return FormattableString.Invariant($"{kenticoClassName}|all");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeAliasPath, settings.Sitename));
+            return settings;
         }
 
-        public static string GetDependencyCacheKeyForMediaFile(Guid guid)
+        public static CacheThis DependsOnDocument(this CacheThis settings, int documentId)
         {
-            return FormattableString.Invariant($"mediafile|{guid:D}");
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForDocument(documentId));
+            return settings;
+        }
+
+        public static CacheThis DependsOnDocument(this CacheThis settings, int[] documentIds)
+        {
+            foreach (var documentId in documentIds)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForDocument(documentId));
+            }
+            return settings;
+        }
+
+        public static CacheThis DependsOnRelationship(this CacheThis settings, int nodeId)
+        {
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForRelationship(nodeId));
+            return settings;
+        }
+
+        public static CacheThis DependsOnRelationship(this CacheThis settings, int[] nodeIds)
+        {
+            foreach (var nodeId in nodeIds)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForRelationship(nodeId));
+            }
+            return settings;
         }
     }
 }

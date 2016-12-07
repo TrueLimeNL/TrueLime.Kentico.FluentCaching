@@ -56,9 +56,14 @@ namespace $rootnamespace$.FluentCaching
             };
         }
 
-        public static string GetDependencyCacheKeyForPage(string kenticoClassName, string siteName = null)
+        public static string GetDependencyCacheKeyForPageType(string kenticoClassName, string siteName = null)
         {
             return FormattableString.Invariant($"nodes|{siteName ?? SiteContext.CurrentSiteName}|{kenticoClassName}|all");
+        }
+
+        public static string GetDependencyCacheKeyForObjectType(string kenticoClassName, string siteName = null)
+        {
+            return FormattableString.Invariant($"{kenticoClassName}|all");
         }
 
         public static string GetDependencyCacheKeyForChildPages(string nodeAliasPath, string siteName = null)
@@ -71,14 +76,24 @@ namespace $rootnamespace$.FluentCaching
             return FormattableString.Invariant($"nodeid|{nodeId}");
         }
 
+        public static string GetDependencyCacheKeyForDocument(int documentId)
+        {
+            return FormattableString.Invariant($"documentid|{documentId}");
+        }
+
+        public static string GetDependencyCacheKeyForRelationship(int nodeId)
+        {
+            return FormattableString.Invariant($"nodeid|{nodeId}|relationships");
+        }
+
         public static string GetDependencyCacheKeyForPage(Guid nodeGuid, string siteName = null)
         {
             return FormattableString.Invariant($"nodeguid|{siteName ?? SiteContext.CurrentSiteName}|{nodeGuid}");
         }
 
-        public static string GetDependencyCacheKeyForObject(string kenticoClassName)
+        public static string GetDependencyCacheKeyForPage(string nodeAliasPath, string siteName = null)
         {
-            return FormattableString.Invariant($"{kenticoClassName}|all");
+            return FormattableString.Invariant($"node|{siteName ?? SiteContext.CurrentSiteName}|{nodeAliasPath}");
         }
 
         public static string GetDependencyCacheKeyForMediaFile(Guid guid)
