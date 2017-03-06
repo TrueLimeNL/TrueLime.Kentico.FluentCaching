@@ -52,21 +52,7 @@ public abstract class CachingRepositoryBase {
 
     protected TResult GetCachedResult<TResult>(Func<TResult> provideData, CacheThis settings)
     {
-        var cacheKey = settings.CacheKey;
-
-        if (!_cacheEnabled)
-        {
-            System.Diagnostics.Debugger.Log(1, "Cache", $"Cache miss: disabled " + cacheKey + "\r\n");
-            return provideData();
-        }
-
-        var cacheSettings = CreateCacheSettings(settings.CacheMinutes, cacheKey, settings.DependencyKeys.ToArray());
-
-        return CacheHelper.Cache(() =>
-        {
-            System.Diagnostics.Debugger.Log(1, "Cache", "Cache miss " + cacheKey + "\r\n");
-            return provideData();
-        }, cacheSettings);
+         return FluentCacheHelper.GetCachedResult(provideData, settings, _enableCaching);
     }
 }
 ```
