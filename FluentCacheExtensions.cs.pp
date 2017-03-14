@@ -111,5 +111,11 @@ namespace $rootnamespace$.FluentCaching
             }
             return settings;
         }
+
+        public static CacheThis DependsOnMediaFile(this CacheThis settings, Guid guid)
+        {
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForMediaFile(guid));
+            return settings;
+        }
     }
 }
