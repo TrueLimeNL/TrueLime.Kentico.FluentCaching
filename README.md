@@ -10,6 +10,21 @@ We'd end up with these complex data access methods and then a blurb cache config
 The Kentico CacheHelper offers a more semantic interface on top of the Kentico Cache helpers.
 Looking the blurb of cache configuration is still there, but it's much easier to write, read and maintain.
 
+### Requirements
+This code has been tested and is currently used in production on multiple projects running:
+
+* Kentico 9 or Kentico 10
+* MVC or Portal Engine.
+
+### Installation instructions
+Install [the nuget package](https://www.nuget.org/packages/TrueLime.Kentico.FluentCaching.Sources/) into the project that holds your custom code. This can be the website project or a class library project used in the CMS or and MVC site.
+
+```
+    Install-Package TrueLime.Kentico.FluentCaching.Sources
+```
+
+Note that this is a source code package. It will add source code to your project but will not add additional assembly dependencies. This way we hope to prevent clashes between different versions of this code in different assemblies and keep this functionality neetly contained within your assembly.
+
 ## Example - generic data access
 The default implementation takes culture, site name and domain name of the current request from the (Kentico) context.
 
