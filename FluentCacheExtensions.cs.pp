@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using CMS.Membership;
 
 namespace $rootnamespace$.FluentCaching
 {
@@ -70,6 +72,26 @@ namespace $rootnamespace$.FluentCaching
             return settings;
         }
 
+        public static CacheThis DependsOnNodes(this CacheThis settings, IEnumerable<int> nodeIds)
+        {
+            foreach (var nodeId in nodeIds)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeId));
+            }
+            
+            return settings;
+        }
+
+        public static CacheThis DependsOnNodes(this CacheThis settings, IEnumerable<Guid> nodeGuids)
+        {
+            foreach (var nodeGuid in nodeGuids)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeGuid));
+            }
+            
+            return settings;
+        }
+
         public static CacheThis DependsOnNode(this CacheThis settings, Guid nodeGuid)
         {
             settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeGuid, settings.Sitename));
@@ -88,7 +110,7 @@ namespace $rootnamespace$.FluentCaching
             return settings;
         }
 
-        public static CacheThis DependsOnDocument(this CacheThis settings, int[] documentIds)
+        public static CacheThis DependsOnDocuments(this CacheThis settings, IEnumerable<int> documentIds)
         {
             foreach (var documentId in documentIds)
             {
@@ -103,7 +125,7 @@ namespace $rootnamespace$.FluentCaching
             return settings;
         }
 
-        public static CacheThis DependsOnRelationship(this CacheThis settings, int[] nodeIds)
+        public static CacheThis DependsOnRelationship(this CacheThis settings, IEnumerable<int> nodeIds)
         {
             foreach (var nodeId in nodeIds)
             {
@@ -115,6 +137,12 @@ namespace $rootnamespace$.FluentCaching
         public static CacheThis DependsOnMediaFile(this CacheThis settings, Guid guid)
         {
             settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForMediaFile(guid));
+            return settings;
+        }
+
+        public static CacheThis PerUser(this CacheThis settings)
+        {
+            settings.CacheKeyParts.Add(MembershipContext.AuthenticatedUser.UserID.ToString());
             return settings;
         }
     }

@@ -7,6 +7,7 @@ CMS.Base
 CMS.Helpers
 CMS.Localization
 CMS.SiteProvider
+CMS.Membership
 
 You can reference the assemblies from the Lib folder or install the Kentico.Libraries Nuget package.
 
