@@ -65,6 +65,12 @@ namespace $rootnamespace$.FluentCaching
             settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForObjectType(objectType));
             return settings;
         }
+		
+		public static CacheThis DependsOnObjectType(this CacheThis settings, string objectType, int id)
+        {
+            settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForObjectType(objectType, id));
+            return settings;
+        }
 
         public static CacheThis DependsOnNode(this CacheThis settings, int nodeId)
         {
