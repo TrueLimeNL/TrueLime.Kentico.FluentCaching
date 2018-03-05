@@ -65,6 +65,11 @@ namespace $rootnamespace$.FluentCaching
         {
             return FormattableString.Invariant($"{kenticoClassName}|all");
         }
+		
+		public static string GetDependencyCacheKeyForObjectType(string kenticoClassName, int id)
+        {
+            return FormattableString.Invariant($"{kenticoClassName}|byid|{id}");
+        }
 
         public static string GetDependencyCacheKeyForChildPages(string nodeAliasPath, string siteName = null)
         {
