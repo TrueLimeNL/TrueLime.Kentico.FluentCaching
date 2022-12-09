@@ -4,18 +4,18 @@
     <id>TrueLime.Kentico.FluentCaching.Sources</id>
     <version>$version$</version>
     <title>Kentico FluentCaching</title>
-    <authors>Marnix van Valen, Sietse Trommelen</authors>
+    <authors>TrueLime</authors>
     <owners>TrueLime BV</owners>
     <licenseUrl>https://github.com/TrueLimeNL/TrueLime.Kentico.FluentCaching/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/TrueLimeNL/TrueLime.Kentico.FluentCaching</projectUrl>
     <iconUrl>http://www.truelime.nl/favicon-196x196.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Helpers to easily implement data caching for Kentico applications. 
+      Helpers to easily implement data caching for Kentico applications.
     </description>
     <releaseNotes></releaseNotes>
     <tags>Kentico, Caching</tags>
-    <copyright>Copyright 2016 TrueLime BV</copyright>
+    <copyright>Copyright 2022 TrueLime BV</copyright>
   </metadata>
   <files>
     <file src="readme.txt" target="" />

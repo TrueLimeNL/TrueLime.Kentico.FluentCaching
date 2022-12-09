@@ -11,9 +11,9 @@ namespace $rootnamespace$.FluentCaching
     /// </summary>
     public static class FluentCacheExtensions
     {
-        public static CacheThis ForMinutes(this CacheThis settings, int minutes)
+        public static CacheThis ForMinutes(this CacheThis settings, CacheDuration duration)
         {
-            settings.CacheMinutes = minutes;
+            settings.CacheMinutes = (int)duration;
             return settings;
         }
 
@@ -25,6 +25,16 @@ namespace $rootnamespace$.FluentCaching
                     ? FormattableString.Invariant($"{key}={value}")
                     : key
                 );
+
+            return settings;
+        }
+
+        public static CacheThis DependsOnPageTypes(this CacheThis settings, string[] pageTypes)
+        {
+            foreach (var pageType in pageTypes)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPageType(pageType, settings.Sitename));
+            }
 
             return settings;
         }
@@ -110,6 +120,16 @@ namespace $rootnamespace$.FluentCaching
             return settings;
         }
 
+        public static CacheThis DependsOnNodes(this CacheThis settings, string[] nodeAliasPaths)
+        {
+            foreach (var nodeAliasPath in nodeAliasPaths)
+            {
+                settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForPage(nodeAliasPath, settings.Sitename));
+            }
+
+            return settings;
+        }
+
         public static CacheThis DependsOnDocument(this CacheThis settings, int documentId)
         {
             settings.DependencyKeys.Add(FluentCacheHelper.GetDependencyCacheKeyForDocument(documentId));
@@ -149,6 +169,25 @@ namespace $rootnamespace$.FluentCaching
         public static CacheThis PerUser(this CacheThis settings)
         {
             settings.CacheKeyParts.Add(MembershipContext.AuthenticatedUser.UserID.ToString());
+            return settings;
+        }
+
+        public static CacheThis WithParametersIfNotNull(this CacheThis settings, KeyValuePair<string, string>[] cacheParams)
+        {
+            if (cacheParams == null || cacheParams.Length == 0)
+                return settings;
+
+            foreach (var cacheParam in cacheParams)
+            {
+                if (string.IsNullOrEmpty(cacheParam.Key) || string.IsNullOrEmpty(cacheParam.Value))
+                    continue;
+
+                settings.CacheKeyParts.Add(
+                    cacheParam.Value != null
+                        ? FormattableString.Invariant($"{cacheParam.Key}={cacheParam.Value}")
+                        : cacheParam.Key);
+            }
+
             return settings;
         }
     }
