@@ -13,8 +13,8 @@ Looking the blurb of cache configuration is still there, but it's much easier to
 ### Requirements
 This code has been tested and is currently used in production on multiple projects running:
 
-* Kentico 9 or Kentico 10
-* MVC or Portal Engine.
+* Kentico 9 to 13
+* MVC or Portal Engine
 
 ### Installation instructions
 Install [the nuget package](https://www.nuget.org/packages/TrueLime.Kentico.FluentCaching.Sources/) into the project that holds your custom code. This can be the website project or a class library project used in the CMS or and MVC site.
